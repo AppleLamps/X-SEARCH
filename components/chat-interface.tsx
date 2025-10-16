@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChatMessage } from "./chat-message";
@@ -91,54 +90,59 @@ export function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="flex-1 container mx-auto max-w-4xl px-4 py-8 flex flex-col">
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-light text-slate-900 mb-2">
-            X Intelligence
-          </h1>
-          <p className="text-slate-600 text-sm">
-            Real-time insights powered by xAI and live X data
-          </p>
-        </div>
-
-        <Card className="flex-1 flex flex-col overflow-hidden shadow-lg border-slate-200">
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
-            {messages.length === 0 ? (
-              <div className="flex items-center justify-center h-full text-slate-400 text-sm">
-                Start a conversation by asking a question about X
+    <div className="flex flex-col h-screen">
+      {/* Chat Messages Area */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="container mx-auto max-w-4xl px-4 pt-8 pb-24">
+          {messages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-[70vh] text-center">
+              <div className="bg-slate-900 p-4 rounded-full mb-4 border border-slate-200">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.5L13.125 5.5L16.125 6.625L13.125 7.75L12 10.75L10.875 7.75L7.875 6.625L10.875 5.5L12 2.5Z" /></svg>
               </div>
-            ) : (
-              messages.map((message, index) => (
+              <h1 className="text-3xl font-bold text-slate-800">X Intelligence</h1>
+              <p className="text-slate-500 mt-2">Ask anything about X. Get real-time, AI-powered insights.</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {messages.map((message, index) => (
                 <ChatMessage
                   key={index}
                   role={message.role}
                   content={message.content}
                 />
-              ))
-            )}
-            <div ref={messagesEndRef} />
-          </div>
+              ))}
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
 
-          <div className="border-t border-slate-200 p-4 bg-white">
-            <form onSubmit={handleSubmit} className="flex gap-2">
+      {/* Fixed Input Area */}
+      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-slate-50 via-slate-50 to-transparent">
+        <div className="container mx-auto max-w-4xl px-4 pb-4">
+          <div className="relative">
+            <form onSubmit={handleSubmit}>
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask anything about X..."
                 disabled={isLoading}
-                className="flex-1 border-slate-300 focus:border-slate-400"
+                className="w-full h-14 pl-4 pr-16 rounded-2xl bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:ring-1 focus:ring-blue-500 shadow-lg"
               />
               <Button
                 type="submit"
+                size="icon"
                 disabled={isLoading || !input.trim()}
-                className="bg-slate-900 hover:bg-slate-800 text-white px-6"
+                className="absolute right-3 top-1/2 -translate-y-1/2 bg-slate-800 hover:bg-slate-700 disabled:bg-slate-300 rounded-lg"
               >
-                {isLoading ? "Thinking..." : "Send"}
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white"><path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </Button>
             </form>
           </div>
-        </Card>
+          <p className="text-center text-xs text-slate-500 mt-3">
+            X Intelligence may produce inaccurate information. Powered by xAI.
+          </p>
+        </div>
       </div>
     </div>
   );
